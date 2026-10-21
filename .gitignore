@@ -1,0 +1,156 @@
+# ==========================================
+# KNOWLEX - Git Ignore
+# ==========================================
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+virtualenv/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# Flask
+instance/
+.webassets-cache/
+*.log
+logs/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+secrets/
+*.pem
+*.key
+*.crt
+credentials.json
+service-account*.json
+
+# Knowledge base and source documents
+knowledge/
+documents/
+data/
+datasets/
+corpus/
+raw_data/
+processed_data/
+uploads/
+*.pdf
+*.docx
+*.doc
+*.pptx
+*.xlsx
+*.xls
+*.zip
+*.7z
+*.rar
+
+# R files generated during execution
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rout
+*.rds
+*.RDataTmp
+renv/library/
+renv/staging/
+
+# RAG indexes and vector databases
+database/
+vectorstore/
+vector_store/
+chroma_db/
+chroma/
+qdrant_storage/
+faiss_index/
+indexes/
+index/
+embeddings/
+*.faiss
+*.index
+*.pkl
+*.pickle
+*.joblib
+*.parquet
+
+# Ollama model files
+models/
+ollama_models/
+*.gguf
+*.safetensors
+*.onnx
+*.pt
+*.pth
+*.bin
+
+# Generated answers, outputs and benchmarks
+output/
+outputs/
+results/
+reports/generated/
+benchmarks/results/
+generated/
+temp/
+tmp/
+*.tmp
+*.out
+
+# Databases and backups
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+*.dump
+*.bak
+*.backup
+
+# Frontend dependencies and build output
+node_modules/
+dist/
+build/
+coverage/
+.parcel-cache/
+.vite/
+.next/
+.nuxt/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Package/build artifacts
+*.egg-info/
+.eggs/
+wheels/
+pip-wheel-metadata/
+dist/
+
+# OS and temporary files
+.Trash-*/
+.nfs*
