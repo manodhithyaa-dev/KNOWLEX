@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TF-IDF RAG · R + Ollama</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <p class="eyebrow">LOCAL KNOWLEDGE ASSISTANT</p>
+      <h1>Ask your knowledge base.</h1>
+      <p class="subtitle">
+        Questions are sent to your existing <code>tfidf_rag.R</code> script.
+        R performs retrieval and Ollama generates the answer.
+      </p>
+    </header>
+
+    <section class="panel">
+      <form id="ask-form">
+        <label for="query">Your question</label>
+        <textarea id="query" name="query" rows="4" required
+          placeholder="What are the assumptions of linear regression?"></textarea>
+        <div class="form-row">
+          <span class="hint">Uses Rscript via Python subprocess</span>
+          <button id="submit-button" type="submit">Ask question <span aria-hidden="true">↗</span></button>
+        </div>
+      </form>
+
+      <p id="status" class="status" role="status">Ready when you are.</p>
+
+      <section id="result-section" class="result-section" hidden>
+        <h2>R script output</h2>
+        <pre id="output" class="output"></pre>
+      </section>
+    </section>
+
+    <footer>HTML + CSS · Flask · R · Ollama</footer>
+  </main>
+
+  <script>
+    const form = document.querySelector("#ask-form");
+    const queryInput = document.querySelector("#query");
+    const submitButton = document.querySelector("#submit-button");
+    const statusEl = document.querySelector("#status");
+    const resultSection = document.querySelector("#result-section");
+    const outputEl = document.querySelector("#output");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const query = queryInput.value.trim();
+      if (!query) return;
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Running R + Ollama…";
+      statusEl.textContent = "Executing tfidf_rag.R. This can take a little while…";
+      statusEl.classList.remove("error");
+      resultSection.hidden = true;
+      outputEl.textContent = "";
+
+      try {
+        const response = await fetch("/api/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query })
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          const details = data.details ? "\n\n" + data.details : "";
+          throw new Error((data.error || "Request failed.") + details);
+        }
+
+        outputEl.textContent = data.output || "No output returned.";
+        resultSection.hidden = false;
+        statusEl.textContent = "Completed successfully.";
+      } catch (error) {
+        outputEl.textContent = error.message;
+        resultSection.hidden = false;
+        statusEl.textContent = "Something went wrong.";
+        statusEl.classList.add("error");
+      } finally {
+        submitButton.disabled = false;
+        submitButton.innerHTML = 'Ask question <span aria-hidden="true">↗</span>';
+      }
+    });
+  </script>
+</body>
+</html>
